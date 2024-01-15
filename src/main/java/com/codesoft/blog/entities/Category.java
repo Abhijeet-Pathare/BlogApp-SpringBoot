@@ -1,11 +1,10 @@
 package com.codesoft.blog.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import org.springframework.data.util.Lazy;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="categories")
@@ -20,6 +19,10 @@ public class Category {
 	
 	@Column(name="description")
 	private String categoryDescription;
+
+	//Cascade all in short : if we delete parent chikd is deleted automatically and if we add parent child is added automaticaly
+	@OneToMany(mappedBy = "category",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	private List<Post> posts = new ArrayList<>();
 	
 	public Category() {
 		
