@@ -1,6 +1,7 @@
 package com.codesoft.blog.controllers;
 
 import com.codesoft.blog.entities.Post;
+import com.codesoft.blog.payloads.ApiResponse;
 import com.codesoft.blog.payloads.PostDto;
 import com.codesoft.blog.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +52,26 @@ public class PostController {
     @GetMapping("/post/{postId}")
     public ResponseEntity<PostDto> getPostById(@PathVariable Integer postId){
         return new ResponseEntity<>(postService.getPostById(postId),HttpStatus.OK);
+    }
+
+    //delete post by postId
+//    @DeleteMapping("/post/{postId}")
+//    public String deletePostById(@PathVariable Integer postId){
+//        postService.deletePost(postId);
+//        return "Post with id "+postId+" deleted succesfully !";
+//    }
+
+    @DeleteMapping("/post/{postId}")
+    public ApiResponse deletePost(@PathVariable Integer postId){
+        postService.deletePost(postId);
+        String message =  "Post with id "+postId+" deleted succesfully !";
+        return new ApiResponse(message,true);
+    }
+
+    //update post
+    @PutMapping("/post/{postId}")
+    public ResponseEntity<PostDto> updatePostById(@RequestBody PostDto postDto, @PathVariable Integer postId){
+        PostDto udpatedPost = postService.updatePost(postDto,postId);
+        return new ResponseEntity<>(udpatedPost,HttpStatus.OK);
     }
 }

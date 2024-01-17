@@ -17,6 +17,7 @@ import java.util.Date;
 //@JsonSerialize//(using = PostDtoSerializer.class)//--> added dependency jacksn databind for serialization purpose
 public class PostDto {
 
+    private Integer postId;
     private String title;
     private String content;
     private String imageName;
