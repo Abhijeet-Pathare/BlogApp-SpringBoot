@@ -13,8 +13,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.hibernate.id.IntegralDataTypeHolder;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -66,7 +69,11 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public List<PostDto> getAllPost() {
+    public List<PostDto> getAllPost(Integer pageNumber,Integer pageSize) {
+        org.springframework.data.domain.Pageable p = PageRequest.of(pageNumber,pageSize);
+            Page<Post> pagePost = postRepo.findAll(p);
+            List<Post> allPosts = pagePost.getContent();
+
         List<Post> posts = postRepo.findAll();
         List<PostDto> postDtos = posts.stream().map(post->modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
         return postDtos;
