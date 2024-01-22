@@ -86,4 +86,10 @@ public class PostController {
         List<PostDto> postDtoList = postService.searchPosts(keyword);
         return new ResponseEntity<>(postDtoList,HttpStatus.OK);
     }
+    //below method is used to seach posts by content using custom query method in repo
+    @GetMapping("/posts/search/content/{keyword}")
+    public ResponseEntity<List<PostDto>> searchByContent(@PathVariable String keyword){
+        List<PostDto> postDtoList = postService.searchByContent(keyword);
+        return new ResponseEntity<>(postDtoList,HttpStatus.OK);
+    }
 }

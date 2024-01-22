@@ -32,4 +32,6 @@ public interface PostService {
     //search posts
     List<PostDto> searchPosts(String keyword);
 
+    List<PostDto> searchByContent(String keyword);
+
 }
