@@ -5,13 +5,17 @@ import com.codesoft.blog.entities.Post;
 import com.codesoft.blog.payloads.ApiResponse;
 import com.codesoft.blog.payloads.PostDto;
 import com.codesoft.blog.payloads.PostResponse;
+import com.codesoft.blog.services.FileService;
 import com.codesoft.blog.services.PostService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 import static com.codesoft.blog.config.AppConstants.PAGE_SIZE;
@@ -22,7 +26,13 @@ import static com.codesoft.blog.config.AppConstants.SORT_BY_POST_ID;
 public class PostController {
 
     @Autowired
-    PostService postService;
+    private PostService postService;
+
+    @Autowired
+    private FileService fileService;
+
+    @Value("${project.image}")
+    private String path;
 
     //create
     @PostMapping("/user/{userId}/category/{categoryId}/posts")
@@ -95,5 +105,16 @@ public class PostController {
     public ResponseEntity<List<PostDto>> searchByContent(@PathVariable String keyword){
         List<PostDto> postDtoList = postService.searchByContent(keyword);
         return new ResponseEntity<>(postDtoList,HttpStatus.OK);
+    }
+
+    //post image upload
+    @PostMapping("/post/image/upload/{postId}")
+    public ResponseEntity<PostDto> uploadPostImage(@RequestParam("image")MultipartFile image,
+                                                         @PathVariable Integer postId) throws IOException {
+        PostDto postDto = this.postService.getPostById(postId);
+        String fileName = fileService.uploadImage(path,image);
+        postDto.setImageName(fileName);
+        PostDto updatedPost = postService.updatePost(postDto,postId);
+        return new ResponseEntity<>(updatedPost,HttpStatus.OK);
     }
 }
