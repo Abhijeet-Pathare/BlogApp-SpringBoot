@@ -2,6 +2,7 @@ package com.codesoft.blog.services;
 
 import com.codesoft.blog.entities.Post;
 import com.codesoft.blog.payloads.PostDto;
+import com.codesoft.blog.payloads.PostResponse;
 
 import java.util.List;
 
@@ -16,7 +17,8 @@ public interface PostService {
     void deletePost(Integer postId);
 
     //gat all posts
-    List<PostDto> getAllPost(Integer pageNumber,Integer pageSize);
+    //List<PostDto> getAllPost(Integer pageNumber,Integer pageSize);
+    PostResponse getAllPost(Integer pageNumber,Integer pageSize);
 
     //get single post by id
     PostDto getPostById(Integer postId);
