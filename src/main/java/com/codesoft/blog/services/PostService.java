@@ -18,7 +18,7 @@ public interface PostService {
 
     //gat all posts
     //List<PostDto> getAllPost(Integer pageNumber,Integer pageSize);
-    PostResponse getAllPost(Integer pageNumber,Integer pageSize);
+    PostResponse getAllPost(Integer pageNumber,Integer pageSize, String sortBy);
 
     //get single post by id
     PostDto getPostById(Integer postId);
@@ -30,6 +30,6 @@ public interface PostService {
     List<PostDto> getPostsByUser(Integer userId);
 
     //search posts
-    List<Post> searchPosts(String keyword);
+    List<PostDto> searchPosts(String keyword);
 
 }

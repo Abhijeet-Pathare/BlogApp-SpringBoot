@@ -5,6 +5,7 @@ import com.codesoft.blog.payloads.ApiResponse;
 import com.codesoft.blog.payloads.PostDto;
 import com.codesoft.blog.payloads.PostResponse;
 import com.codesoft.blog.services.PostService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,8 +46,9 @@ public class PostController {
     //get all posts
     @GetMapping("/posts")
     public ResponseEntity<PostResponse> getAllPosts(@RequestParam(value="pageNumber",defaultValue = "0",required = false) Integer pageNumber,
-                                                    @RequestParam(value="pageSize",defaultValue = "10",required = false) Integer pageSize){
-       PostResponse postResponse = postService.getAllPost(pageNumber,pageSize);
+                                                    @RequestParam(value="pageSize",defaultValue = "10",required = false) Integer pageSize,
+                                                    @RequestParam(value="sortBy", defaultValue="postId",required = false) String sortBy){
+       PostResponse postResponse = postService.getAllPost(pageNumber,pageSize, sortBy);
 
         return new ResponseEntity<>(postResponse,HttpStatus.OK);
     }
@@ -76,5 +78,12 @@ public class PostController {
     public ResponseEntity<PostDto> updatePostById(@RequestBody PostDto postDto, @PathVariable Integer postId){
         PostDto udpatedPost = postService.updatePost(postDto,postId);
         return new ResponseEntity<>(udpatedPost,HttpStatus.OK);
+    }
+
+    //search operation using title
+    @GetMapping("/posts/search/{keyword}")
+    public ResponseEntity<List<PostDto>> searchByTitle(@PathVariable String keyword){
+        List<PostDto> postDtoList = postService.searchPosts(keyword);
+        return new ResponseEntity<>(postDtoList,HttpStatus.OK);
     }
 }

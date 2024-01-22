@@ -11,13 +11,12 @@ import com.codesoft.blog.repositories.PostRepo;
 import com.codesoft.blog.repositories.UserRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.hibernate.id.IntegralDataTypeHolder;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -71,9 +70,9 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public PostResponse getAllPost(Integer pageNumber, Integer pageSize) {
+    public PostResponse getAllPost(Integer pageNumber, Integer pageSize, String sortBy) {
 
-        Pageable p = PageRequest.of(pageNumber,pageSize);
+        Pageable p = PageRequest.of(pageNumber,pageSize, Sort.by(sortBy));
 //        org.springframework.data.domain.Pageable p = PageRequest.of(pageNumber,pageSize);
             Page<Post> pagePost = postRepo.findAll(p);
             List<Post> allPosts = pagePost.getContent();
@@ -120,8 +119,10 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public List<Post> searchPosts(String keyword) {
-        return null;
+    public List<PostDto> searchPosts(String keyword) {
+        List<Post> posts = postRepo.findByTitleContaining(keyword);
+        List<PostDto> postDtos = posts.stream().map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+        return postDtos;
     }
 
 }
