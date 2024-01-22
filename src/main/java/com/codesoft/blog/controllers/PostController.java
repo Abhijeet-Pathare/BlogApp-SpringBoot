@@ -1,5 +1,6 @@
 package com.codesoft.blog.controllers;
 
+import com.codesoft.blog.config.AppConstants;
 import com.codesoft.blog.entities.Post;
 import com.codesoft.blog.payloads.ApiResponse;
 import com.codesoft.blog.payloads.PostDto;
@@ -12,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.codesoft.blog.config.AppConstants.PAGE_SIZE;
+import static com.codesoft.blog.config.AppConstants.SORT_BY_POST_ID;
 
 @RestController
 @RequestMapping("/api")
@@ -45,9 +49,9 @@ public class PostController {
 
     //get all posts
     @GetMapping("/posts")
-    public ResponseEntity<PostResponse> getAllPosts(@RequestParam(value="pageNumber",defaultValue = "0",required = false) Integer pageNumber,
-                                                    @RequestParam(value="pageSize",defaultValue = "10",required = false) Integer pageSize,
-                                                    @RequestParam(value="sortBy", defaultValue="postId",required = false) String sortBy){
+    public ResponseEntity<PostResponse> getAllPosts(@RequestParam(value="pageNumber",defaultValue = AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+                                                    @RequestParam(value="pageSize",defaultValue = PAGE_SIZE,required = false) Integer pageSize,
+                                                    @RequestParam(value="sortBy", defaultValue=SORT_BY_POST_ID,required = false) String sortBy){
        PostResponse postResponse = postService.getAllPost(pageNumber,pageSize, sortBy);
 
         return new ResponseEntity<>(postResponse,HttpStatus.OK);
