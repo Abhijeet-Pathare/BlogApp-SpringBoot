@@ -46,6 +46,16 @@ public class GlobalExceptionHandler {
 		
 		return new ResponseEntity<Map<String,String>>(resp,HttpStatus.BAD_REQUEST);
 	}
+
+	@ExceptionHandler(CommentNotFoundException.class)
+	public ResponseEntity<ApiResponse> handleCommentNotFoundException(CommentNotFoundException ex){
+		String message = ex.getMessage();
+		ApiResponse apiResponse = new ApiResponse();
+		apiResponse.setMessage(message);
+		apiResponse.setSuccess(false);
+		return new ResponseEntity<>(apiResponse,HttpStatus.NOT_FOUND);
+	}
+
 }
 
 

@@ -1,13 +1,16 @@
 package com.codesoft.blog.payloads;
 
 import com.codesoft.blog.entities.Category;
+import com.codesoft.blog.entities.Comment;
 import com.codesoft.blog.entities.User;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Getter
@@ -25,5 +28,6 @@ public class PostDto {
 
     private Category category;
     private User user;
+    private List<Comment> comments = new ArrayList<>();
 
 }

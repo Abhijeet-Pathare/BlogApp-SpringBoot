@@ -3,7 +3,9 @@ package com.codesoft.blog.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="post")
@@ -32,5 +34,8 @@ public class Post {
 
     @ManyToOne
     private User user;
+
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 
 }
